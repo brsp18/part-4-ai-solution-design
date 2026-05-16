@@ -1,34 +1,34 @@
-*** Task 1: Choose a Business Domain***
+### Task 1: Choose a Business Domain ###
 ## 1. Business Domain
 Healthcare
 
-*** Task 2: Define the Business Problem ***
-### 1. Business Problem 
+### Task 2: Define the Business Problem ###
+*** 1. Business Problem ***
 The primary problem is the Diagnosis gap in medical imaging. Since medical system follows first-come first-serve standards, Some of the Critical, serious life-threatening conditions likr brain hemorrhage (or)  lung cancer diagnosis will take longer time while a specialist reviews non-urgent cases.
 
-## 2. Stakeholders
+*** 2. Stakeholders ***
 1. Radiologists: Radiologists are Primary users who need to prioritize urgent scans.
 2. Emergency Room Physicians: Physicians who relay on life-saving interventions.
 3. Hospital Administrators: Focus on patients reducing diagnostic errors.
 4. Patients: The  beneficiaries of faster treatment.
 
 
-### 3. Current Process
+*** 3. Current Process ***
 1. Linear Worklists: Images are uploaded to system and added to a chronological queue.
 2. Manual Prioritization: Radiologists scan the list based on broad department priority 
 (e.g., "ER" vs. "Outpatient") rather than the severity of condition.
 3. Standard Reporting: Reports are dictated and transcribed, which can take anywhere from 15-20  minutes to several hours.
 
-### 4. Limitations
+*** 4. Limitations ***
 1. Latency in Critical Care: There is No automated "flagging" for urgent findings immediately after a scan is completed.
 2. Human Fatigue: High volume and repetitive tasks increase the risk of missing or ability to diagnose the condition because of cognitive bias.
 3. Inconsistency: Variation in interpretation speed and accuracy across different hospital shifts.
 4. Operational Strain: Growing scans create bottlenecks that slow down the entire hospital system.
 
-*** Task 3: Identify the AI Task Type ***
-### Classification: Object Detection (with a sub-component of Anomaly Detection)
+### Task 3: Identify the AI Task Type ###
+** Classification: Object Detection (with a sub-component of Anomaly Detection) **
 
-### Why this AI task type is suitable:
+*** Why this AI task type is suitable: ***
 1. Medical imaging isn’t just about finding out if something is wrong; it’s about finding exactly where the problem is and how urgent it is. Here is why Object Detection is the right tool for the job:
 
 2. It’s not enough to tell a doctor a scan is "abnormal." The AI acts like a digital highlighter, drawing "bounding boxes" around specific issues like a tiny fracture or a blood clot. This saves the radiologist time by showing them exactly where to look first.
@@ -39,22 +39,22 @@ The primary problem is the Diagnosis gap in medical imaging. Since medical syste
 
 5. Doctors long night shifts can make them exhausted. The AI acts as a 24/7 safety net that never gets exhausted. It flags tiny changes that are easy to overlook, helping ensure every patient gets a consistent, high-quality review.
 
-*** Task 4: Data Requirement Plan ***
-### Type of data needed 
+### Task 4: Data Requirement Plan 
+*** Type of data needed ***
 We require Medical Imaging Data, specifically DICOM (Digital Imaging and Communications in Medicine) files. These files contain high-resolution pixel data (X-rays, CTs, or MRIs) along with embedded metadata such as the scan type, equipment settings, and patient demographics.
 
-### We need both Structured & Unstructured Data 
+*** We need both Structured & Unstructured Data ***
 Unstructured Data: The primary source is the images,scans (the raw pixels).
 
 Structured Data: The metadata within the DICOM headers (age, gender, orientation of the scan).
 
-### Input Features
+*** Input Features ***
 To train the model effectively, the following features will be extracted:
 Pixel Intensity Arrays: The raw visual information from the scans.
 Spatial Dimensions: Height, width, and depth (for 3D scans like CTs).
 Anatomical Metadata: Information identifying the body part (e.g., "Chest," "Brain," "Pelvis") to ensure the model uses the correct sub-algorithm.
 
-### Target Variable or Labels
+*** Target Variable or Labels ***
 Since this is an Object Detection task, our labels must be precise:
 1. Bounding Box Coordinates: $[x_{min}, y_{min}, x_{max}, y_{max}]$ coordinates that frame the anomaly.
 2. Class Labels: The specific name of the pathology (e.g., "Pneumothorax," "Hemorrhage," "Fracture").
@@ -74,7 +74,7 @@ Failure to properly "de-identify" data (stripping patient names) could lead to l
 
 Scans taken on an old X-ray machine might look different than those from a brand-new one, causing the AI to struggle with consistency.
 
-*** Task 5: Model Recommendation ***
+### Task 5: Model Recommendation 
 Recommended Architecture: CNN with Transfer Learning (e.g., ResNet or EfficientNet)
 
 CNNs: CNNs are specifically designed to process pixel data. They use "filters" that automatically learn to identify important visual features—starting with simple edges and textures, and moving up to complex shapes like the curvature of a rib or the density of a lung nodule.
@@ -83,8 +83,8 @@ Transfer Learning: Training a medical AI from scratch requires millions of image
 
 For the final section of your solution_report.md, you need to define how we measure success. In healthcare, this is a "double-bottom-line" evaluation: we must prove the AI is technically accurate and that it actually improves hospital operations.
 
-*** Task 6: Evaluation Plan ***
-### Technical Metrics
+### Task 6: Evaluation Plan 
+*** Technical Metrics ***
 To ensure the model is safe and reliable, we will use:
 
 Recall (Sensitivity): This is our most critical metric. It measures the AI's ability to find all actual positive cases. In medicine, a "False Negative" (missing a disease) is far more dangerous than a "False Positive."
@@ -95,7 +95,7 @@ F1-Score: The harmonic mean of Precision and Recall, providing a single balanced
 
 mAP (mean Average Precision): Since we are using Object Detection, this measures how accurately the bounding boxes overlap with the actual location of the anomaly.
 
-### Business Metrics
+*** Business Metrics ***
 These metrics show the hospital board the "Return on Investment" (ROI):
 
 Turnaround Time (TAT) for Critical Findings: The average time from the moment a scan is finished to when a radiologist reviews it. We aim for a 50-70% reduction for urgent cases.
@@ -105,14 +105,14 @@ Triage Efficiency: The percentage of life-threatening cases that were successful
 Length of Stay (LOS) in ER: Tracking if faster diagnosis leads to patients being treated or admitted more quickly.
 
 
-### Possible Failure Cases
+*** Possible Failure Cases ***
 Edge Case Vulnerability: The model might struggle with rare pathologies it hasn't seen often in training.
 
 Technical Bias: The AI might perform better on images from one specific manufacturer's X-ray machine but fail on another.
 
 Connectivity Issues: If the hospital network goes down, the AI triage system cannot communicate with the worklist.
 
-### Human Review & Validation Process
+*** Human Review & Validation Process ***
 The "Gold Standard" Audit: Every month, a panel of senior radiologists will "blindly" review a random 5% of the AI’s assessments to ensure its accuracy hasn't drifted.
 
 Human-in-the-Loop (HITL): The AI never makes a final diagnosis. It only "flags" and "suggests." A human radiologist must sign off on every AI-generated alert before it becomes a part of the patient's permanent record.
